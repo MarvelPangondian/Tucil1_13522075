@@ -23,12 +23,14 @@ bool pairInPath(pair<int,int> curr_coordinates, vector<pair<int,int>> path){
 }
 
 void printPath(vector<pair<int, int>> path){
+    cout << "Coordinates (row,col): " << endl;
     for (int i = 0 ; i < path.size() ; i++){
         cout << path[i].first  + 1 << ", " << path[i].second  + 1 << endl;
     }
 }
 
 void printSequence(vector<string> sequence){
+    cout << "Optimal Sequence : ";
     for (int i = 0 ; i < sequence.size() ; i++){
         cout << sequence[i] << " ";
 
