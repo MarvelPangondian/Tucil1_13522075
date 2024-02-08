@@ -1,2 +1,2 @@
-g++ src/main.cpp -o bin/main
+g++ src/main.cpp src/cyberpunk.cpp -o bin/main
 bin\main.exe
