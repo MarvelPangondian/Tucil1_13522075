@@ -21,10 +21,11 @@ int main(){
     vector <pair<int,int>> curr_max_combination;
     int curr_max_point = -1;
     all_combo = allCombinatations(sequences,points,matrix,&curr_max_point,curr_max_combination,7);
-    cout << all_combo.size();
-    vector<string> sequence = {"7A", "BD", "7A", "BD" ,"1C" ,"BD", "55"};
-    int total_points = sequence_to_point(sequence,sequences,points);
-    cout << endl << total_points << endl;
+    cout << "point : " << curr_max_point << endl;
+    vector<string> sequence = pathToSequence(curr_max_combination,matrix);
+    print_sequence(sequence);
+
+
     // printCombinations(all_combo,matrix);
     
     return 0;
