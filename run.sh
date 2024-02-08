@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Compile the program
-g++ src/main.cpp src/cyberpunk.cpp -o bin/main
+g++ src/main.cpp src/cyberpunk.cpp src/IO.cpp -o bin/main
 
 # Check if the compilation was successful
 if [ $? -eq 0 ]; then

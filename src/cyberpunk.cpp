@@ -1,15 +1,6 @@
 #include "cyberpunk.hpp"
 using namespace std;
 
-void printCombinations(const vector<vector<pair<int, int>>>& combinations, const vector<vector<string>>& matrix) {
-    for (const auto& combo : combinations) {
-        for (const auto& p : combo) {
-            cout << matrix[p.first][p.second] << " ";
-        }
-        cout << endl;
-    }
-}
-
 bool pairInPath(pair<int,int> curr_coordinates, vector<pair<int,int>> path){
     bool isIn = false;
     for (int i = 0 ; i < path.size() ; i++){
@@ -22,21 +13,6 @@ bool pairInPath(pair<int,int> curr_coordinates, vector<pair<int,int>> path){
 
 }
 
-void printPath(vector<pair<int, int>> path){
-    cout << "Coordinates (row,col): " << endl;
-    for (int i = 0 ; i < path.size() ; i++){
-        cout << path[i].first  + 1 << ", " << path[i].second  + 1 << endl;
-    }
-}
-
-void printSequence(vector<string> sequence){
-    cout << "Optimal Sequence : ";
-    for (int i = 0 ; i < sequence.size() ; i++){
-        cout << sequence[i] << " ";
-
-    }
-    cout << endl;
-}
 vector<string> pathToSequence (vector<pair<int,int>> path, vector<vector<string>> matrix){
     vector<string> sequence;
     path.shrink_to_fit();
@@ -46,8 +22,6 @@ vector<string> pathToSequence (vector<pair<int,int>> path, vector<vector<string>
         sequence.emplace_back(matrix[row][col]);
     }
     return sequence;
-
-    
 }
 
 int sequence_to_point(vector<string> sequence ,vector<vector<string>> sequences , vector<int> points){

@@ -2,9 +2,41 @@
 
 // #include "IO.hpp"
 #include "IO.hpp"
+#include <vector>
+#include "cyberpunk.hpp"
 using namespace std;
 
 
+void displayResult(int curr_max_point, vector <pair<int,int>> curr_max_combination, vector<vector<string>> matrix, int time){
+    if (curr_max_point == 0){
+        cout << "No Possible Sequences" << endl;
+    }
+    else{
+        cout << "Result: " << endl;
+        cout << curr_max_point << endl;
+        vector<string> sequence = pathToSequence(curr_max_combination,matrix);
+        printSequence(sequence);
+        printPath(curr_max_combination);
+        cout << endl;
+        cout << time << "ms" << endl;
+
+    }
+
+}
+void printPath(vector<pair<int, int>> path){
+    cout << "Coordinates (col,row): " << endl;
+    for (int i = 0 ; i < path.size() ; i++){
+        cout << path[i].second  + 1 << ", " << path[i].first  + 1 << endl;
+    }
+}
+void printSequence(vector<string> sequence){
+    cout << "Optimal Sequence : ";
+    for (int i = 0 ; i < sequence.size() ; i++){
+        cout << sequence[i] << " ";
+
+    }
+    cout << endl;
+}
 void printMatrix(const vector<vector<string>> matrix){
     int row = matrix.size();
     int col = matrix[0].size();
@@ -48,14 +80,14 @@ vector<string> stringSeperator(string sentence){
     return result;
 }
 
+
 void display_menu(int* input){
     cout << "=================================================================" << endl;
     cout << "INPUT OPTIONS : " << endl;
-    cout << "1.Command Line" << endl;
-    cout << "2.Text file" << endl;
+    cout << "1.Text file" << endl;
+    cout << "2.Command Line" << endl;
     cout << "3.Exit" << endl;
     bool valid = false;
-    int input;
     do {
         cout << "input : " ;
         cin >> *input;
