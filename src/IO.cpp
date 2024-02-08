@@ -1,12 +1,7 @@
 
 
 // #include "IO.hpp"
-#include <iostream>
-#include <fstream>
-#include <vector>
-#include <string>
-#include <algorithm>
-#include <sstream>
+#include "IO.hpp"
 using namespace std;
 
 
@@ -24,7 +19,6 @@ void printMatrix(const vector<vector<string>> matrix){
 
 void printSequences(vector<vector<string>> sequences, vector<int> points){
     int rowseq = sequences.size();
-    
     for (int curr_row = 0 ; curr_row < rowseq ; curr_row++){
         cout << "Sequence " << curr_row + 1 << ": ";
         for (int curr_col = 0 ; curr_col < sequences[curr_row].size(); curr_col++){
@@ -32,7 +26,6 @@ void printSequences(vector<vector<string>> sequences, vector<int> points){
         }
         cout << endl;
         cout << "Point " << curr_row +1 << " : " << points[curr_row] << endl;
-
     }
 
 }
@@ -43,7 +36,6 @@ string removeNewLine(string line){
         }
         // line.erase(remove(line.begin(), line.end(), '\n'), line.end());
     return line;
-
 }
 
 vector<string> stringSeperator(string sentence){
@@ -53,66 +45,92 @@ vector<string> stringSeperator(string sentence){
     while (iss >> token) { 
         result.push_back(token);
     }
-
-
     return result;
 }
 
-void display_menu(){
+void display_menu(int* input){
     cout << "=================================================================" << endl;
     cout << "INPUT OPTIONS : " << endl;
     cout << "1.Command Line" << endl;
     cout << "2.Text file" << endl;
+    cout << "3.Exit" << endl;
     bool valid = false;
     int input;
     do {
-
-        
-        
         cout << "input : " ;
-        cin >> input;
-        if (input == 1){
+        cin >> *input;
+        if (*input == 1){
             valid = true;
         }
-        else if (input == 2){
+        else if (*input == 2){
             valid = true;
-
+        }
+        else if (*input == 3){
+            valid = true;
         }
         else {
             cout << "Please enter the correct input type !" << endl;
         }
     }while (!valid);
-
-    switch(input){
-        case(1):
-
-            break;
-        case (2) : 
-            cout << "you choose 2 ! ";
-            break;
-
-    }
 }
 
-void randomInput(){
+void randomInput(vector<vector<string>>& sequences ,vector<vector<string>>& matrix, vector<int>& points, int* buffer){
     cout << "=================================================================" << endl;
-    int total_token, buffer, row, col, total_sequences;
+    int total_token, row, col, total_sequences,maximum_sequence_size;
     string token_temp;
     vector<string> tokens;
     cout << "Command Line Input" << endl;
     cout << "number of unique token     : ";
     cin >> total_token;
     cout << "Enter all tokens           : ";
-    cin >> token_temp; 
+    getline(std::cin, token_temp);
+    getline(std::cin, token_temp);
     tokens = stringSeperator(token_temp);
 
     cout << "Buffer Size                : ";
-    cin >> buffer;
+    cin >> *buffer;
     cout << "Matrix Size (row column)   : ";
     cin >> row;
     cin >> col; 
     cout << "Number of Sequences        : ";
     cin >> total_sequences;
+    cout << "Maximum sequence size      : ";
+    cin >> maximum_sequence_size;
+    random_device rd;
+    mt19937 engine(rd()); 
+    uniform_int_distribution<int> dist(0, total_token-1);
+    // generating matrix
+    for (int curr_row = 0 ; curr_row < row; curr_row++){
+        vector<string> aRow;
+        for (int curr_col = 0 ; curr_col < col ; curr_col++){
+            // int randNum = randomNumberGenerator(0,total_token-1);
+            // cout << "RANDOM NUMBER : " << randNum << endl;
+            aRow.emplace_back(tokens[dist(engine)]);
+        }
+        matrix.emplace_back(aRow);
+        
+    }
+
+
+    // generating sequence and points
+    random_device rd2;
+    mt19937 engine2(rd2()); 
+    uniform_int_distribution<int> dist2(2, maximum_sequence_size);
+
+    random_device rd3;
+    mt19937 engine3(rd3()); 
+    uniform_int_distribution<int> dist3(3, 10);
+
+    for (int curr_sequence = 0 ; curr_sequence < total_sequences ; curr_sequence++){
+        vector<string> aSeq;
+        int random_size_sequence = dist2(engine2);
+        for (int size = 0 ;size <  random_size_sequence; size++ ){
+            int random_token_index = dist(engine);
+            aSeq.emplace_back(tokens[random_token_index]);
+        }
+        sequences.emplace_back(aSeq);
+        points.emplace_back(dist3(engine3) * 5);
+    }
 }
 
 void readFile(vector<vector<string>>& sequences ,vector<vector<string>>& matrix, vector<int>& points, int* buffer ){
@@ -126,16 +144,11 @@ void readFile(vector<vector<string>>& sequences ,vector<vector<string>>& matrix,
 
     while (!file) {
         cout << "File doesn't exist!, make sure the file is in the test folde and the working folder is correct !" << endl;
-        
-        // Close the previously attempted file (good practice, though not strictly necessary here)
         file.close();
-        
         cout << "Enter File Name : ";
         cin >> fileNameTemp;
         fileName = "test/";
         fileName.append(fileNameTemp);
-        
-        // Correctly reopen the file with the updated fileName
         file.open(fileName);
     }
 
@@ -168,39 +181,33 @@ void readFile(vector<vector<string>>& sequences ,vector<vector<string>>& matrix,
             sequences.push_back(aSequence);
             getline(myFile,line);
             points.push_back(stoi(removeNewLine(line)));
-
-
         }
         myFile.close();
         
-
     }
 }
 
-int main(){
-    vector<vector<string>> sequences;
-    vector<vector<string>> matrix;
-    vector<int> points;
-    int curr_max_point = -1, buffer;
-    vector <pair<int,int>> curr_max_combination;
-    readFile(sequences ,matrix, points, &buffer );
-    cout << buffer; cout << endl;
-    
-    // vector<vector<string>> sequences = {{"1C","55","55"}, {"1C","55"}, {"55","BD","E9","1C"}};
-    // vector<vector<string>> matrix = {
-    //     {"1C","1C","55","E9","55"},
-    //     {"1C","1C","E9","55","55"},
-    //     {"BD","55","55","1C","BD"},
-    //     {"1C","E9","55","BD","BD"},
-    //     {"55","1C","55","E9","55"}
-    // };
-    // vector<int> points = {15,20,30};
-    printMatrix(matrix);
-    printSequences(sequences,points);
-    cout << endl;
-    
+// int main(){
 
+//     vector<vector<string>> sequences;
+//     vector<vector<string>> matrix;
+//     vector<int> points;
+//     int curr_max_point = -1, buffer;
+//     vector <pair<int,int>> curr_max_combination;
+//     randomInput(sequences ,matrix, points, &buffer );
+//     cout << buffer; cout << endl;
+    
+//     // // vector<vector<string>> sequences = {{"1C","55","55"}, {"1C","55"}, {"55","BD","E9","1C"}};
+//     // // vector<vector<string>> matrix = {
+//     // //     {"1C","1C","55","E9","55"},
+//     // //     {"1C","1C","E9","55","55"},
+//     // //     {"BD","55","55","1C","BD"},
+//     // //     {"1C","E9","55","BD","BD"},
+//     // //     {"55","1C","55","E9","55"}
+//     // // };
+//     // // vector<int> points = {15,20,30};
+//     printMatrix(matrix);
+//     printSequences(sequences,points);
+//     // cout << endl;
 
-    
-    
-}
+// }

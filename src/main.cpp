@@ -1,5 +1,6 @@
 #include <iostream>
 #include "cyberpunk.hpp"
+#include "IO.hpp"
 #include <vector>
 using namespace std;
 
@@ -43,6 +44,5 @@ int main(){
     vector<int> points;
     int curr_max_point = -1, buffer;
     vector <pair<int,int>> curr_max_combination;
-    
     return 0;
 }
