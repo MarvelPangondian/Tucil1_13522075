@@ -4,9 +4,7 @@
 #include <chrono>
 #include "cyberpunk.hpp"
 #include "IO.hpp"
-
 using namespace std;
-
 
 
 int main(){

@@ -18,9 +18,16 @@ void displayResult(int curr_max_point, vector <pair<int,int>> curr_max_combinati
         printSequence(sequence);
         printPath(curr_max_combination);
         cout << endl;
-        cout << time << "ms" << endl;
+        cout << time << "ms" << endl << endl;
+        cout << "Apakah ingin menyimpan solusi? (y/n)";
+        char input;
+        cin >> input;
+        if (input == 'y'){
+            write_file(curr_max_point,curr_max_combination,matrix,time);
+        }
 
     }
+
 
 }
 void printPath(vector<pair<int, int>> path){
@@ -183,6 +190,7 @@ void readFile(vector<vector<string>>& sequences ,vector<vector<string>>& matrix,
         fileName.append(fileNameTemp);
         file.open(fileName);
     }
+    file.close();
 
     fstream myFile;
     int row,col,total_sequence;
@@ -219,27 +227,41 @@ void readFile(vector<vector<string>>& sequences ,vector<vector<string>>& matrix,
     }
 }
 
-// int main(){
+void write_file(int curr_max_point, vector <pair<int,int>> curr_max_combination, vector<vector<string>> matrix, int time){
+    cout << "=================================================================" << endl;
+    cout << "SAVE SOLUTION" << endl;
+    cout << "File Name (With extension) : ";
+    string fileNameTemp;
+    cin >> fileNameTemp;
+    string fileName = "test/";
+    fileName.append(fileNameTemp);
+    ifstream file(fileName);
+    while (file) {
+        cout << "File already exist, please rename the file !" << endl;
+        file.close();
+        cout << "File Name (With extension) : ";
+        cin >> fileNameTemp;
+        fileName = "test/";
+        fileName.append(fileNameTemp);
+        file.open(fileName);
+    }
+    file.close();
+    fstream myFile;
+    myFile.open(fileName,ios::out);
+    if (myFile.is_open()){
+        myFile << curr_max_point << "\n";
+        vector<string> sequence = pathToSequence(curr_max_combination,matrix);
+        for(int i = 0 ; i < sequence.size(); i++){
+            myFile << sequence[i] << " ";
+        }
+        myFile << "\n";
+        for (int k = 0 ; k < curr_max_combination.size() ; k++){
+            myFile << curr_max_combination[k].second +1 << ", " << curr_max_combination[k].first + 1;
+            myFile << "\n";
+        }
+        myFile << "\n";
+        myFile << time <<"ms";
+        myFile.close();
+    }
 
-//     vector<vector<string>> sequences;
-//     vector<vector<string>> matrix;
-//     vector<int> points;
-//     int curr_max_point = -1, buffer;
-//     vector <pair<int,int>> curr_max_combination;
-//     randomInput(sequences ,matrix, points, &buffer );
-//     cout << buffer; cout << endl;
-    
-//     // // vector<vector<string>> sequences = {{"1C","55","55"}, {"1C","55"}, {"55","BD","E9","1C"}};
-//     // // vector<vector<string>> matrix = {
-//     // //     {"1C","1C","55","E9","55"},
-//     // //     {"1C","1C","E9","55","55"},
-//     // //     {"BD","55","55","1C","BD"},
-//     // //     {"1C","E9","55","BD","BD"},
-//     // //     {"55","1C","55","E9","55"}
-//     // // };
-//     // // vector<int> points = {15,20,30};
-//     printMatrix(matrix);
-//     printSequences(sequences,points);
-//     // cout << endl;
-
-// }
+}
