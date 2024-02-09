@@ -8,6 +8,7 @@ if [ $? -eq 0 ]; then
     echo "Compilation successful. Running the program..."
     # Run the compiled program
     ./bin/main
+    rm ./bin/main
 else
     echo "Compilation failed."
 fi
