@@ -14,7 +14,7 @@ int main(){
         vector<vector<string>> sequences;
         vector<vector<string>> matrix;
         vector<int> points;
-        int curr_max_point = -1, buffer;
+        int curr_max_point = -2147483640, buffer;
         vector <pair<int,int>> curr_max_combination;
         display_menu(&input);
         switch(input){

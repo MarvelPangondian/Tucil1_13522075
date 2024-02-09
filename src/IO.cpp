@@ -8,7 +8,7 @@ using namespace std;
 
 
 void displayResult(int curr_max_point, vector <pair<int,int>> curr_max_combination, vector<vector<string>> matrix, int time){
-    if (curr_max_point == 0){
+    if (curr_max_point == -2147483640){
         cout << "No Possible Sequences" << endl;
     }
     else{
