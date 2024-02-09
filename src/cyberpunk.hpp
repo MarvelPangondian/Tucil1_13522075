@@ -16,3 +16,5 @@ vector<string> pathToSequence (vector<pair<int,int>> path, vector<vector<string>
 
 bool pairInPath(pair<int,int> curr_coordinates, vector<pair<int,int>> path);
     // return true if pair in path, false if not
+
+bool sequenceInSequences(vector<string> sequence, vector<vector<string>> sequences);

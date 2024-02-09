@@ -161,13 +161,17 @@ void randomInput(vector<vector<string>>& sequences ,vector<vector<string>>& matr
     uniform_int_distribution<int> dist3(3, 10);
 
     for (int curr_sequence = 0 ; curr_sequence < total_sequences ; curr_sequence++){
+        vector<string> aSeq1;
+        do {
         vector<string> aSeq;
         int random_size_sequence = dist2(engine2);
         for (int size = 0 ;size <  random_size_sequence; size++ ){
             int random_token_index = dist(engine);
             aSeq.emplace_back(tokens[random_token_index]);
-        }
-        sequences.emplace_back(aSeq);
+        aSeq1 = aSeq;
+        }} while (sequenceInSequences(aSeq1,sequences));
+        
+        sequences.emplace_back(aSeq1);
         points.emplace_back(dist3(engine3) * 5);
     }
 }

@@ -1,6 +1,23 @@
 #include "cyberpunk.hpp"
 using namespace std;
 
+bool sequenceInSequences(vector<string> sequence, vector<vector<string>> sequences){
+    bool sequenceDuplicate = false;
+    int k = 0;
+    for (int i = 0 ; i < sequences.size() ; i++){
+        k = 0;
+        while (k < sequence.size() && sequence[k] == sequences[i][k]){
+
+            k++;
+        }
+        if (k == sequence.size()){
+            sequenceDuplicate = true;
+            break;
+        }
+    }
+    return sequenceDuplicate;
+}
+
 bool pairInPath(pair<int,int> curr_coordinates, vector<pair<int,int>> path){
     bool isIn = false;
     for (int i = 0 ; i < path.size() ; i++){
@@ -10,7 +27,6 @@ bool pairInPath(pair<int,int> curr_coordinates, vector<pair<int,int>> path){
         }
     }
     return isIn;
-
 }
 
 vector<string> pathToSequence (vector<pair<int,int>> path, vector<vector<string>> matrix){
@@ -35,6 +51,10 @@ int sequence_to_point(vector<string> sequence ,vector<vector<string>> sequences 
             if (sequence[seq] == sequences[k][0] && ! has_visited[k]){
                 bool valid = true;
                 for (int l = 1 ; l < sequences[k].size(); l++){
+                    if ((seq + l) >= sequence.size()){
+                        valid = false;
+                        break;
+                    }
                     if (sequence[seq + l] != sequences[k][l]){
                         valid = false;
                         break;
@@ -124,7 +144,6 @@ void next_choice(int curr_row, int curr_col, int row_matrix, int col_matrix, boo
                         else{
                             vector<string> sequence_temp = pathToSequence(new_path,matrix);
                             temp_point = sequence_to_point(sequence_temp,sequence,points);
-
                         }
                         if (temp_point > *curr_max_point || (temp_point == *curr_max_point && new_path.size() < curr_max_combination.size())){
                                 *curr_max_point = temp_point;
