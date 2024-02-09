@@ -19,7 +19,7 @@ void displayResult(int curr_max_point, vector <pair<int,int>> curr_max_combinati
         printPath(curr_max_combination);
         cout << endl;
         cout << time << "ms" << endl << endl;
-        cout << "Apakah ingin menyimpan solusi? (y/n)";
+        cout << "Apakah ingin menyimpan solusi? (y/n) : ";
         char input;
         cin >> input;
         if (input == 'y'){
