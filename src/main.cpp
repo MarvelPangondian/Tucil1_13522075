@@ -25,6 +25,7 @@ int main(){
                 vector<vector<pair<int, int>>> allCombinations = allCombinatations(sequences,points,matrix,&curr_max_point,curr_max_combination,buffer);
                 auto end = chrono::high_resolution_clock::now();// end timer
                 auto elapsed = chrono::duration_cast<std::chrono::milliseconds>(end - start); 
+                
                 displayResult(curr_max_point,curr_max_combination,matrix,elapsed.count());
                 break;
             }
