@@ -8,8 +8,18 @@ using namespace std;
 
 
 void displayResult(int curr_max_point, vector <pair<int,int>> curr_max_combination, vector<vector<string>> matrix, int time){
-    if (curr_max_point == 0){
-        cout << "No Possible Sequences" << endl;
+    if (curr_max_point == -2147483640){
+        cout << "Result: " << endl;
+        cout << "Zero Buffer" << endl;
+        cout << endl;
+        cout << time << "ms" << endl << endl;
+        cout << "Apakah ingin menyimpan solusi? (y/n) : ";
+        char input;
+        cin >> input;
+        if (input == 'y');
+        write_file(curr_max_point,curr_max_combination,matrix,time);
+
+
     }
     else{
         cout << "Result: " << endl;
@@ -19,7 +29,7 @@ void displayResult(int curr_max_point, vector <pair<int,int>> curr_max_combinati
         printPath(curr_max_combination);
         cout << endl;
         cout << time << "ms" << endl << endl;
-        cout << "Apakah ingin menyimpan solusi? (y/n)";
+        cout << "Apakah ingin menyimpan solusi? (y/n) : ";
         char input;
         cin >> input;
         if (input == 'y'){
@@ -95,9 +105,19 @@ void display_menu(int* input){
     cout << "2.Command Line" << endl;
     cout << "3.Exit" << endl;
     bool valid = false;
+    *input = 0;
+    char clearBuff[80];
     do {
+
         cout << "input : " ;
-        cin >> *input;
+         cin >> *input;
+        if (cin.fail()){
+            cout << "That's not an integer !" << endl;
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        }
+        else {
+        }
         if (*input == 1){
             valid = true;
         }
@@ -122,9 +142,15 @@ void randomInput(vector<vector<string>>& sequences ,vector<vector<string>>& matr
     cout << "number of unique token     : ";
     cin >> total_token;
     cout << "Enter all tokens           : ";
-    getline(std::cin, token_temp);
-    getline(std::cin, token_temp);
-    tokens = stringSeperator(token_temp);
+    // getline(std::cin, token_temp);
+    // getline(std::cin, token_temp);
+    // tokens = stringSeperator(token_temp);
+    string temp_token;
+    for (int token = 0 ; token < total_token ; token++){
+        cin >> temp_token;
+        tokens.emplace_back(temp_token);
+    }
+
 
     cout << "Buffer Size                : ";
     cin >> *buffer;
@@ -161,13 +187,17 @@ void randomInput(vector<vector<string>>& sequences ,vector<vector<string>>& matr
     uniform_int_distribution<int> dist3(3, 10);
 
     for (int curr_sequence = 0 ; curr_sequence < total_sequences ; curr_sequence++){
+        vector<string> aSeq1;
+        do {
         vector<string> aSeq;
         int random_size_sequence = dist2(engine2);
         for (int size = 0 ;size <  random_size_sequence; size++ ){
             int random_token_index = dist(engine);
             aSeq.emplace_back(tokens[random_token_index]);
-        }
-        sequences.emplace_back(aSeq);
+        aSeq1 = aSeq;
+        }} while (sequenceInSequences(aSeq1,sequences));
+        
+        sequences.emplace_back(aSeq1);
         points.emplace_back(dist3(engine3) * 5);
     }
 }
@@ -249,18 +279,26 @@ void write_file(int curr_max_point, vector <pair<int,int>> curr_max_combination,
     fstream myFile;
     myFile.open(fileName,ios::out);
     if (myFile.is_open()){
-        myFile << curr_max_point << "\n";
-        vector<string> sequence = pathToSequence(curr_max_combination,matrix);
-        for(int i = 0 ; i < sequence.size(); i++){
-            myFile << sequence[i] << " ";
-        }
-        myFile << "\n";
-        for (int k = 0 ; k < curr_max_combination.size() ; k++){
-            myFile << curr_max_combination[k].second +1 << ", " << curr_max_combination[k].first + 1;
+
+        if (curr_max_point == -2147483640){
+            myFile << "Zero Buffer\n";
             myFile << "\n";
+            myFile << time <<"ms";
         }
-        myFile << "\n";
-        myFile << time <<"ms";
+        else{
+            myFile << curr_max_point << "\n";
+            vector<string> sequence = pathToSequence(curr_max_combination,matrix);
+            for(int i = 0 ; i < sequence.size(); i++){
+                myFile << sequence[i] << " ";
+            }
+            myFile << "\n";
+            for (int k = 0 ; k < curr_max_combination.size() ; k++){
+                myFile << curr_max_combination[k].second +1 << ", " << curr_max_combination[k].first + 1;
+                myFile << "\n";
+            }
+            myFile << "\n";
+            myFile << time <<"ms";
+        }
         myFile.close();
     }
 
