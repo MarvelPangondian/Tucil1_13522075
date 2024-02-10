@@ -105,9 +105,19 @@ void display_menu(int* input){
     cout << "2.Command Line" << endl;
     cout << "3.Exit" << endl;
     bool valid = false;
+    *input = 0;
+    char clearBuff[80];
     do {
+
         cout << "input : " ;
-        cin >> *input;
+         cin >> *input;
+        if (cin.fail()){
+            cout << "That's not an integer !" << endl;
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        }
+        else {
+        }
         if (*input == 1){
             valid = true;
         }
