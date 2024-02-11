@@ -1,0 +1,12 @@
+3
+3 3
+BC CD BC
+AB CD CD
+BC AB BC
+3
+CD BC
+50
+CD CD
+40
+CD AB
+45

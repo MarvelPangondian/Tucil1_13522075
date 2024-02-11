@@ -2,10 +2,19 @@
 
 // #include "IO.hpp"
 #include "IO.hpp"
-#include <vector>
 #include "cyberpunk.hpp"
 using namespace std;
 
+bool areTokensUnique(vector<string> tokens){
+    for (int i = 0 ; i < tokens.size() ; i++){
+        for (int k = i + 1; k < tokens.size() ; k++){
+            if (tokens[i] == tokens[k]){
+                return false;
+            }
+        }
+    }
+    return true;
+}
 
 void displayResult(int curr_max_point, vector <pair<int,int>> curr_max_combination, vector<vector<string>> matrix, int time){
     if (curr_max_point <= 0){
@@ -16,8 +25,10 @@ void displayResult(int curr_max_point, vector <pair<int,int>> curr_max_combinati
         cout << "Apakah ingin menyimpan solusi? (y/n) : ";
         char input;
         cin >> input;
-        if (input == 'y');
-        write_file(curr_max_point,curr_max_combination,matrix,time);
+        if (input == 'y'){
+            write_file(curr_max_point,curr_max_combination,matrix,time);
+        }
+
 
 
     }
@@ -35,10 +46,7 @@ void displayResult(int curr_max_point, vector <pair<int,int>> curr_max_combinati
         if (input == 'y'){
             write_file(curr_max_point,curr_max_combination,matrix,time);
         }
-
     }
-
-
 }
 void printPath(vector<pair<int, int>> path){
     cout << "Coordinates (col,row): " << endl;
@@ -69,7 +77,7 @@ void printMatrix(const vector<vector<string>> matrix){
 void printSequences(vector<vector<string>> sequences, vector<int> points){
     int rowseq = sequences.size();
     for (int curr_row = 0 ; curr_row < rowseq ; curr_row++){
-        cout << "Sequence " << curr_row + 1 << ": ";
+        cout << "Sequence " << curr_row + 1 << "   : ";
         for (int curr_col = 0 ; curr_col < sequences[curr_row].size(); curr_col++){
             cout << sequences[curr_row][curr_col] << " ";
         }
@@ -133,34 +141,92 @@ void display_menu(int* input){
     }while (!valid);
 }
 
-void randomInput(vector<vector<string>>& sequences ,vector<vector<string>>& matrix, vector<int>& points, int* buffer){
+bool randomInput(vector<vector<string>>& sequences ,vector<vector<string>>& matrix, vector<int>& points, int* buffer){
     cout << "=================================================================" << endl;
     int total_token, row, col, total_sequences,maximum_sequence_size;
     string token_temp;
     vector<string> tokens;
+
+    try {
     cout << "Command Line Input" << endl;
     cout << "number of unique token     : ";
     cin >> total_token;
-    cout << "Enter all tokens           : ";
-    // getline(std::cin, token_temp);
-    // getline(std::cin, token_temp);
-    // tokens = stringSeperator(token_temp);
-    string temp_token;
-    for (int token = 0 ; token < total_token ; token++){
-        cin >> temp_token;
-        tokens.emplace_back(temp_token);
+    if (cin.fail()){
+        cout << "Something Went Wrong !" << endl;
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        return false;
     }
+    bool unique = false;
+    
+    do {
+        vector<string> tokensTemp;
+        cout << "Enter all tokens           : ";
+        string temp_token;
+        for (int token = 0 ; token < total_token ; token++){
+        cin >> temp_token;
+        if (cin.fail()){
+        cout << "Something Went Wrong !" << endl;
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        return false;
+        }
+        tokensTemp.emplace_back(temp_token);
+    }
+    unique = areTokensUnique(tokensTemp);
+    if (!unique){
+        cout << "Please make sure all tokens are unique !" << endl;
+    }
+    else {
+        tokens = tokensTemp;
+    }
+    } while (!unique);
+    
+
 
 
     cout << "Buffer Size                : ";
     cin >> *buffer;
+    if (cin.fail()){
+        cout << "Something Went Wrong !" << endl;
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        return false;
+    }
+
     cout << "Matrix Size (column row)   : ";
-    cin >> col; 
+    cin >> col;
+    if (cin.fail()){
+        cout << "Something Went Wrong !" << endl;
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        return false;
+    } 
+
     cin >> row;
+    if (cin.fail()){
+        cout << "Something Went Wrong !" << endl;
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        return false;
+    } 
+
     cout << "Number of Sequences        : ";
     cin >> total_sequences;
+    if (cin.fail()){
+        cout << "Something Went Wrong !" << endl;
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        return false;
+    } 
     cout << "Maximum sequence size      : ";
     cin >> maximum_sequence_size;
+    if (cin.fail()){
+        cout << "Something Went Wrong !" << endl;
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        return false;
+    } 
     random_device rd;
     mt19937 engine(rd()); 
     uniform_int_distribution<int> dist(0, total_token-1);
@@ -174,7 +240,6 @@ void randomInput(vector<vector<string>>& sequences ,vector<vector<string>>& matr
         
     }
 
-
     // generating sequence and points
     random_device rd2;
     mt19937 engine2(rd2()); 
@@ -183,9 +248,11 @@ void randomInput(vector<vector<string>>& sequences ,vector<vector<string>>& matr
     random_device rd3;
     mt19937 engine3(rd3()); 
     uniform_int_distribution<int> dist3(3, 10);
+    int repeats;
 
     for (int curr_sequence = 0 ; curr_sequence < total_sequences ; curr_sequence++){
         vector<string> aSeq1;
+        repeats = 0;
         do {
         vector<string> aSeq;
         int random_size_sequence = dist2(engine2);
@@ -193,14 +260,31 @@ void randomInput(vector<vector<string>>& sequences ,vector<vector<string>>& matr
             int random_token_index = dist(engine);
             aSeq.emplace_back(tokens[random_token_index]);
         aSeq1 = aSeq;
-        }} while (sequenceInSequences(aSeq1,sequences));
+        }
+        repeats++;
+        if (repeats > 100){
+            cout << "Something Went Wrong !" << endl;
+            cout << "With the current inputs, creating unique sequences is impossible !" << endl;
+            return false;
+        }
+            } while (sequenceInSequences(aSeq1,sequences));
         
         sequences.emplace_back(aSeq1);
         points.emplace_back(dist3(engine3) * 5);
     }
+
+    } catch(const runtime_error &e){
+        cerr << "Caught a runtime error: " << e.what() << endl ;
+        return false;
+    }
+    catch (...){
+        cerr << "Something Went Wrong" << endl;
+        return false;
+    }
+    return true;
 }
 
-void readFile(vector<vector<string>>& sequences ,vector<vector<string>>& matrix, vector<int>& points, int* buffer ){
+bool readFile(vector<vector<string>>& sequences ,vector<vector<string>>& matrix, vector<int>& points, int* buffer ){
     cout << "=================================================================" << endl;
     string fileNameTemp;
     cout << "Enter File Name : ";
@@ -224,7 +308,9 @@ void readFile(vector<vector<string>>& sequences ,vector<vector<string>>& matrix,
     int row,col,total_sequence;
     vector<string>row_col ;
     vector<string> aRow;
-    myFile.open(fileName,ios::in);
+
+    try{
+            myFile.open(fileName,ios::in);
     if (myFile.is_open()){
         string line;
         getline(myFile,line);
@@ -251,8 +337,17 @@ void readFile(vector<vector<string>>& sequences ,vector<vector<string>>& matrix,
             points.push_back(stoi(removeNewLine(line)));
         }
         myFile.close();
-        
+        }   
     }
+    catch (const std::runtime_error &e){
+        cerr << "Caught a runtime error: " << e.what() << endl;
+        return false;
+    }
+    catch (...){
+        cerr << "Something went wrong" << endl;
+        return false;
+        }
+    return true;
 }
 
 void write_file(int curr_max_point, vector <pair<int,int>> curr_max_combination, vector<vector<string>> matrix, int time){

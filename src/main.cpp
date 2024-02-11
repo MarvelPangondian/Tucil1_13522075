@@ -20,25 +20,29 @@ int main(){
         switch(input){
             case(1):
             {
-                readFile(sequences ,matrix, points, &buffer);
+                if (! readFile(sequences ,matrix, points, &buffer)){
+                    break;
+                }
                 auto start = chrono::high_resolution_clock::now(); // start timer
-                vector<vector<pair<int, int>>> allCombinations = allCombinatations(sequences,points,matrix,&curr_max_point,curr_max_combination,buffer);
+                allCombinatations(sequences,points,matrix,&curr_max_point,curr_max_combination,buffer);
                 auto end = chrono::high_resolution_clock::now();// end timer
-                auto elapsed = chrono::duration_cast<std::chrono::milliseconds>(end - start); 
+                auto elapsed = chrono::duration_cast<chrono::milliseconds>(end - start); 
                 
                 displayResult(curr_max_point,curr_max_combination,matrix,elapsed.count());
                 break;
             }
             case(2):
             {
-                randomInput(sequences ,matrix, points, &buffer);
+                if (! randomInput(sequences ,matrix, points, &buffer)){
+                    break;
+                }
                 cout << endl;
                 printMatrix(matrix);
                 cout << endl;
                 printSequences(sequences,points);
                 cout << endl;
                 auto start = chrono::high_resolution_clock::now(); // start timer
-                vector<vector<pair<int, int>>> allCombinations = allCombinatations(sequences,points,matrix,&curr_max_point,curr_max_combination,buffer);
+                allCombinatations(sequences,points,matrix,&curr_max_point,curr_max_combination,buffer);
                 auto end = chrono::high_resolution_clock::now();// end timer
                 auto elapsed = chrono::duration_cast<std::chrono::milliseconds>(end - start); 
                 displayResult(curr_max_point,curr_max_combination,matrix,elapsed.count());
