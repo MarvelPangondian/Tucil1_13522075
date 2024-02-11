@@ -71,7 +71,7 @@ int sequence_to_point(const vector<string>& sequence ,const vector<vector<string
     
 }
 
-void next_choice(int curr_row, int curr_col, int row_matrix, int col_matrix, bool row_search,int buffer, vector<pair<int, int>>& path , int* curr_max_point, vector <pair<int,int>>& curr_max_combination,vector <vector <pair<int,int>>>& all_combinations, const vector<vector<string>>& sequence, const vector<int>& points , int max_points, const vector<vector<string>>& matrix, vector<vector<bool>> hasVisited, int minSeqSize, vector<string> sequence_temp){
+void next_choice(int curr_row, int curr_col, int row_matrix, int col_matrix, bool row_search,int buffer, vector<pair<int, int>>& path , int* curr_max_point, vector <pair<int,int>>& curr_max_combination,const vector <vector <pair<int,int>>>& all_combinations, const vector<vector<string>>& sequence, const vector<int>& points , int max_points, const vector<vector<string>>& matrix, vector<vector<bool>> hasVisited, int minSeqSize, vector<string> sequence_temp){
     if (row_search){
         for (int next_col = 0 ; next_col < col_matrix ; ++next_col){
             if (next_col != curr_col){
@@ -86,7 +86,7 @@ void next_choice(int curr_row, int curr_col, int row_matrix, int col_matrix, boo
                     sequence_temp.push_back(matrix[curr_row][next_col]);
                     if (new_path.size() == buffer || new_path.size() == row_matrix*col_matrix){
                         int temp_point;
-                        all_combinations.push_back(new_path);
+                        // all_combinations.push_back(new_path);
                         temp_point = sequence_to_point(sequence_temp,sequence,points);
                         if (temp_point >  *curr_max_point){
                             *curr_max_point = temp_point;
@@ -133,7 +133,7 @@ void next_choice(int curr_row, int curr_col, int row_matrix, int col_matrix, boo
                     sequence_temp.push_back(matrix[next_row][curr_col]);
                     if (new_path.size() == buffer || new_path.size() == row_matrix*col_matrix){
                         int temp_point;
-                        all_combinations.push_back(new_path);
+                        // all_combinations.push_back(new_path);
                         vector<string> sequence_temp = pathToSequence(new_path,matrix);
                         temp_point = sequence_to_point(sequence_temp,sequence,points);
                         if (temp_point >  *curr_max_point){
@@ -178,7 +178,7 @@ vector <vector <pair<int,int>>> allCombinatations( const vector<vector<string>>&
     int col = matrix[0].size();
     int max_points = 0;
     
-    vector <vector <pair<int,int>>> all_combinations; // records all paths that has been visited before
+    vector <vector <pair<int,int>>> all_combinations; // records all paths that has been visited before, for testing purposes only
     
     for (int i  = 0 ; i < points.size(); i++){
         if (points[i] >= 0){

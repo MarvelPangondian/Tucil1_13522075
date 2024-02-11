@@ -8,9 +8,9 @@ using namespace std;
 
 
 void displayResult(int curr_max_point, vector <pair<int,int>> curr_max_combination, vector<vector<string>> matrix, int time){
-    if (curr_max_point == -2147483640){
+    if (curr_max_point <= 0){
         cout << "Result: " << endl;
-        cout << "Zero Buffer" << endl;
+        cout << "No Solution" << endl;
         cout << endl;
         cout << time << "ms" << endl << endl;
         cout << "Apakah ingin menyimpan solusi? (y/n) : ";
@@ -154,9 +154,9 @@ void randomInput(vector<vector<string>>& sequences ,vector<vector<string>>& matr
 
     cout << "Buffer Size                : ";
     cin >> *buffer;
-    cout << "Matrix Size (row column)   : ";
-    cin >> row;
+    cout << "Matrix Size (column row)   : ";
     cin >> col; 
+    cin >> row;
     cout << "Number of Sequences        : ";
     cin >> total_sequences;
     cout << "Maximum sequence size      : ";
@@ -168,8 +168,6 @@ void randomInput(vector<vector<string>>& sequences ,vector<vector<string>>& matr
     for (int curr_row = 0 ; curr_row < row; curr_row++){
         vector<string> aRow;
         for (int curr_col = 0 ; curr_col < col ; curr_col++){
-            // int randNum = randomNumberGenerator(0,total_token-1);
-            // cout << "RANDOM NUMBER : " << randNum << endl;
             aRow.emplace_back(tokens[dist(engine)]);
         }
         matrix.emplace_back(aRow);
@@ -280,8 +278,8 @@ void write_file(int curr_max_point, vector <pair<int,int>> curr_max_combination,
     myFile.open(fileName,ios::out);
     if (myFile.is_open()){
 
-        if (curr_max_point == -2147483640){
-            myFile << "Zero Buffer\n";
+        if (curr_max_point <= 0){
+            myFile << "No Solution\n";
             myFile << "\n";
             myFile << time <<"ms";
         }
