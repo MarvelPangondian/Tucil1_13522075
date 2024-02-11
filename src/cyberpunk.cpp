@@ -72,7 +72,7 @@ int sequence_to_point(const vector<string>& sequence ,const vector<vector<string
 }
 
 void next_choice(int curr_row, int curr_col, int row_matrix, int col_matrix, bool row_search,int buffer, vector<pair<int, int>>& path , int* curr_max_point, vector <pair<int,int>>& curr_max_combination,const vector <vector <pair<int,int>>>& all_combinations, const vector<vector<string>>& sequence, const vector<int>& points , int max_points, const vector<vector<string>>& matrix, vector<vector<bool>> hasVisited, int minSeqSize, vector<string> sequence_temp){
-    if (row_search){
+    if (row_search){ // make sure if program is looking for a token in the same row or not
         for (int next_col = 0 ; next_col < col_matrix ; ++next_col){
             if (next_col != curr_col){
                 vector<pair<int, int>> new_path = path; // curr_row,next_col   ---- new_path
