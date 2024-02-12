@@ -8,4 +8,4 @@ BC CD BC TR TR CD 1F
 7, 2
 5, 2
 
-2391ms
+696ms

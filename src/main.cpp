@@ -8,7 +8,10 @@ using namespace std;
 
 
 int main(){
-
+    cout << endl;
+    cout << "Cyberpunk 2077 Hacking Minigame Solver" << endl;
+    cout << "Tugas Kecil 1 Strategi Algoritma" << endl;
+    cout << "Marvel Pangondian - 13522075" << endl;
     int input = -1;
     while (input != 3){
         vector<vector<string>> sequences;
@@ -37,8 +40,10 @@ int main(){
                     break;
                 }
                 cout << endl;
+                cout << "MATRIX :" << endl;
                 printMatrix(matrix);
                 cout << endl;
+                cout << " SEQUENCES : " << endl;
                 printSequences(sequences,points);
                 cout << endl;
                 auto start = chrono::high_resolution_clock::now(); // start timer
