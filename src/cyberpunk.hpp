@@ -14,8 +14,5 @@ int sequence_to_point(const vector<string>& sequence ,const vector<vector<string
 vector<string> pathToSequence (const vector<pair<int,int>>& path, const vector<vector<string>>& matrix);
     // change from path (vector<pair<int,int>>) into a sequence (vector<string>)
 
-bool pairInPath(pair<int,int> curr_coordinates, vector<pair<int,int>> path);
-    // return true if pair in path, false if not , for testing purposes only
-
 bool sequenceInSequences(vector<string> sequence, vector<vector<string>> sequences);
     // return true if a sequence in a vector of sequences , for testing purposes only

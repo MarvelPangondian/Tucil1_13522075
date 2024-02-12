@@ -2,10 +2,16 @@
 
 using namespace std;
 
-bool sequenceInSequences(vector<string> sequence, vector<vector<string>> sequences){
+bool sequenceInSequences(vector<string> sequence, vector<vector<string>> sequences)
+// Check if a sequence is in a vector of sequences
+// to prevent duplicate sequences
+{
+    // KAMUS LOKAL
     bool sequenceDuplicate = false;
-    int k = 0;
-    for (int i = 0 ; i < sequences.size() ; i++){
+    int k = 0, i;
+
+    // ALGORITMA
+    for (i = 0 ; i < sequences.size() ; i++){
         k = 0;
         while (k < sequence.size() && sequence[k] == sequences[i][k]){
             k++;
@@ -18,20 +24,15 @@ bool sequenceInSequences(vector<string> sequence, vector<vector<string>> sequenc
     return sequenceDuplicate;
 }
 
-bool pairInPath(pair<int,int> curr_coordinates, vector<pair<int,int>> path){
-    bool isIn = false;
-    for (int i = 0 ; i < path.size() ; i++){
-        if (curr_coordinates.first == path[i].first && curr_coordinates.second == path[i].second){
-            isIn = true;
-            break;
-        }
-    }
-    return isIn;
-}
-
-vector<string> pathToSequence (const vector<pair<int,int>>& path, const vector<vector<string>>& matrix){
+vector<string> pathToSequence (const vector<pair<int,int>>& path, const vector<vector<string>>& matrix)
+// Change path (a sequence of coordinates) into a sequence 
+{
+    // KAMUS LOKAL
     vector<string> sequence;
-    for (int i = 0 ; i < path.size() ; i++){
+    int i;
+
+    // ALGORITMA
+    for (i = 0 ; i < path.size() ; i++){
         int row = path[i].first;
         int col = path[i].second;
         sequence.emplace_back(matrix[row][col]);
@@ -39,17 +40,22 @@ vector<string> pathToSequence (const vector<pair<int,int>>& path, const vector<v
     return sequence;
 }
 
-int sequence_to_point(const vector<string>& sequence ,const vector<vector<string>>& sequences , const vector<int>& points){
+int sequence_to_point(const vector<string>& sequence ,const vector<vector<string>>& sequences , const vector<int>& points)
+// Return points according to a sequence
+{
+    // KAMUS LOKAl
     int has_visited[points.size()];
-    int total_points = 0;
-    for (int i  = 0 ; i < points.size() ; i++){
+    int total_points = 0, i, seq, k, l;
+
+    // ALGORITMA
+    for (i  = 0 ; i < points.size() ; i++){
         has_visited[i] = 0;
     }
-    for (int seq = 0 ; seq < sequence.size(); seq++){
-        for (int k = 0 ; k < points.size() ; k++){
+    for (seq = 0 ; seq < sequence.size(); seq++){
+        for (k = 0 ; k < points.size() ; k++){
             if (sequence[seq] == sequences[k][0] && ! has_visited[k]){
                 bool valid = true;
-                for (int l = 1 ; l < sequences[k].size(); l++){
+                for (l = 1 ; l < sequences[k].size(); l++){
                     if ((seq + l) >= sequence.size()){
                         valid = false;
                         break;
@@ -70,8 +76,12 @@ int sequence_to_point(const vector<string>& sequence ,const vector<vector<string
     
 }
 
-void next_choice(int curr_row, int curr_col, int row_matrix, int col_matrix, bool row_search, int buffer, vector<pair<int, int>>& path, int* curr_max_point, vector<pair<int,int>>& curr_max_combination, const vector<vector<string>>& sequence, const vector<int>& points, int max_points, const vector<vector<string>>& matrix, vector<vector<bool>>& hasVisited, int minSeqSize, vector<string>& sequence_temp){
+void next_choice(int curr_row, int curr_col, int row_matrix, int col_matrix, bool row_search, int buffer, vector<pair<int, int>>& path, int* curr_max_point, vector<pair<int,int>>& curr_max_combination, const vector<vector<string>>& sequence, const vector<int>& points, int max_points, const vector<vector<string>>& matrix, vector<vector<bool>>& hasVisited, int minSeqSize, vector<string>& sequence_temp)
+// find the possible next token to choose 
+{
+    // KAMUS LOKAL
     int next_col, temp_point, next_row;
+
     if (row_search){ // make sure if program is looking for a token in the same row or not
         for (int next_col = 0 ; next_col < col_matrix ; ++next_col){
             if (next_col != curr_col){
@@ -88,15 +98,15 @@ void next_choice(int curr_row, int curr_col, int row_matrix, int col_matrix, boo
                     if (temp_point < max_points && path.size() != buffer && path.size() != row_matrix * col_matrix) {
                     next_choice(curr_row, next_col, row_matrix, col_matrix, !row_search, buffer, path, curr_max_point, curr_max_combination, sequence, points, max_points, matrix, hasVisited, minSeqSize, sequence_temp);
                     }
-                    path.pop_back();
-                    sequence_temp.pop_back();
-                    hasVisited[curr_row][next_col] = false;
+                    path.pop_back(); // pop the current coordinate from path
+                    sequence_temp.pop_back(); // pop the current coordinate from sequence_temp
+                    hasVisited[curr_row][next_col] = false; // revert back to false for the current coordinate
                 }
             }
         }
     }
     else{
-        for (int next_row = 0 ; next_row < row_matrix ; ++next_row){
+        for (next_row = 0 ; next_row < row_matrix ; ++next_row){
             if (next_row != curr_row){
                 if (!hasVisited[next_row][curr_col]){
                     hasVisited[next_row][curr_col] = true;
@@ -111,9 +121,9 @@ void next_choice(int curr_row, int curr_col, int row_matrix, int col_matrix, boo
                     if (temp_point < max_points && path.size() != buffer && path.size() != row_matrix * col_matrix) {
                     next_choice(next_row, curr_col, row_matrix, col_matrix, !row_search, buffer, path, curr_max_point, curr_max_combination, sequence, points, max_points, matrix, hasVisited, minSeqSize, sequence_temp);
                     }
-                    path.pop_back();
-                    sequence_temp.pop_back();
-                    hasVisited[next_row][curr_col] = false;
+                    path.pop_back(); // pop the current coordinate from path 
+                    sequence_temp.pop_back(); // pop the current coordinate from sequence_temp
+                    hasVisited[next_row][curr_col] = false; // revert back to false for the current coordinate
                 }
 
             }
@@ -121,21 +131,23 @@ void next_choice(int curr_row, int curr_col, int row_matrix, int col_matrix, boo
     }
 }
 void allCombinatations(const vector<vector<string>>& sequence, const vector<int>& points, const vector<vector<string>>& matrix, int* curr_max_point, vector <pair<int,int>>& curr_max_combination,int buffer){
-    
-    int row = matrix.size();
-    int col = matrix[0].size();
-    int max_points = 0;
-    
-     // records all paths that has been visited before, for testing purposes only
-    
-    for (int i  = 0 ; i < points.size(); i++){
+// find all possible combinations in the matrix
+
+    // KAMUS LOKAL
+    int row = matrix.size(), col = matrix[0].size(), max_points = 0;
+    int k, i ;
+    vector<vector<bool>> hasVisited(row, vector<bool>(col, false));
+    vector<string> sequence_temp;
+
+    // ALGORITMA
+    for (i = 0 ; i < points.size(); i++){
         if (points[i] >= 0){
             max_points += points[i];
             }
     }
     // minimum sequence size : 
     int minSeqSize;
-    for (int k = 0 ; k < sequence.size(); k++){
+    for (k = 0 ; k < sequence.size(); k++){
         if (k == 0){
             minSeqSize = sequence[0].size();
         }
@@ -149,8 +161,6 @@ void allCombinatations(const vector<vector<string>>& sequence, const vector<int>
         }
     }
 
-    vector<vector<bool>> hasVisited(row, vector<bool>(col, false));
-    vector<string> sequence_temp;
     for (int top_col = 0 ; top_col < col ; ++top_col){
         hasVisited[0][top_col] = true;
         sequence_temp.emplace_back(matrix[0][top_col]);
