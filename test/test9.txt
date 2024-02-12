@@ -1,4 +1,4 @@
-5
+8
 6 5
 BC FG DE GH FG AB
 BC DE DE AB FG AB
