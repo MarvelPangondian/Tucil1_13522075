@@ -1,6 +1,3 @@
-0
-7A 55 
-1, 1
-1, 2
+No Solution
 
-1ms
+0ms

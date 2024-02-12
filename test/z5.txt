@@ -1,0 +1,22 @@
+6
+6 7
+wT qY kS kS Aa kS
+qY rr rr qY wT Aa
+kS Aa wT kS wT Aa
+Aa qY kS wT wT wT
+Aa rr rr kS rr wT
+kS wT rr rr wT qY
+qY rr qY wT qY qY
+6
+rr kS rr kS rr qY
+50
+kS qY wT
+45
+qY rr rr wT Aa rr
+15
+qY qY kS
+15
+rr qY rr rr kS
+45
+rr rr
+45
