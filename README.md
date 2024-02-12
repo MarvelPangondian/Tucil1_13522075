@@ -50,6 +50,7 @@
 │       └─── test8Solution.txt
 │
 ├─── .gitignore
+├─── LICENSE
 ├─── README.md
 ├─── run.bat
 └─── run.sh
