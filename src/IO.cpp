@@ -317,7 +317,7 @@ bool randomInput(vector<vector<string>>& sequences ,vector<vector<string>>& matr
 
     random_device rd3;
     mt19937 engine3(rd3()); 
-    uniform_int_distribution<int> dist3(3, 10);
+    uniform_int_distribution<int> dist3(50, 1000);
     int repeats;
 
     for (int curr_sequence = 0 ; curr_sequence < total_sequences ; curr_sequence++){
@@ -339,7 +339,7 @@ bool randomInput(vector<vector<string>>& sequences ,vector<vector<string>>& matr
         }
             } while (sequenceInSequences(aSeq1,sequences));
         sequences.emplace_back(aSeq1);
-        points.emplace_back(dist3(engine3) * 5);
+        points.emplace_back(dist3(engine3));
     }
 
     } catch(const runtime_error &e){
