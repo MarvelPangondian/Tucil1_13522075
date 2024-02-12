@@ -180,7 +180,7 @@ void display_menu(int* input)
             valid = true;
         }
         else {
-            cout << "Please enter the correct input type !" << endl;
+            cout << "Enter the correct input!" << endl;
         }
     }while (!valid);
 }
