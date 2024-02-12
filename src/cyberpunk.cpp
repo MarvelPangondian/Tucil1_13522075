@@ -70,54 +70,103 @@ int sequence_to_point(const vector<string>& sequence ,const vector<vector<string
     
 }
 
-void next_choice(int curr_row, int curr_col, int row_matrix, int col_matrix, bool row_search, int buffer, vector<pair<int, int>>& path, int* curr_max_point, vector<pair<int,int>>& curr_max_combination, const vector<vector<string>>& sequence, const vector<int>& points, int max_points, const vector<vector<string>>& matrix, vector<vector<bool>>& hasVisited, int minSeqSize, vector<string>& sequence_temp) {
-    if (row_search) {
-        for (int next_col = 0; next_col < col_matrix; ++next_col) {
-            if (next_col != curr_col && !hasVisited[curr_row][next_col]) {
-                hasVisited[curr_row][next_col] = true;
-                path.emplace_back(curr_row, next_col);
-                sequence_temp.push_back(matrix[curr_row][next_col]);
-
-                int temp_point = sequence_temp.size() >= minSeqSize ? sequence_to_point(sequence_temp, sequence, points) : 0;
-                
-                if (temp_point > *curr_max_point || (temp_point == *curr_max_point && path.size() < curr_max_combination.size())) {
-                    *curr_max_point = temp_point;
-                    curr_max_combination = path;
+void next_choice(int curr_row, int curr_col, int row_matrix, int col_matrix, bool row_search,int buffer, vector<pair<int, int>>& path , int* curr_max_point, vector <pair<int,int>>& curr_max_combination, const vector<vector<string>>& sequence, const vector<int>& points , int max_points, const vector<vector<string>>& matrix, vector<vector<bool>> hasVisited, int minSeqSize, vector<string> sequence_temp){
+    if (row_search){ // make sure if program is looking for a token in the same row or not
+        for (int next_col = 0 ; next_col < col_matrix ; ++next_col){
+            if (next_col != curr_col){
+                vector<pair<int, int>> new_path = path; // curr_row,next_col   ---- new_path
+                if (!hasVisited[curr_row][next_col]){
+                    hasVisited[curr_row][next_col] = true;
+                    new_path.emplace_back(curr_row,next_col);
+                    sequence_temp.push_back(matrix[curr_row][next_col]);
+                    if (new_path.size() == buffer || new_path.size() == row_matrix*col_matrix){
+                        int temp_point;
+                        // all_combinations.push_back(new_path);
+                        temp_point = sequence_to_point(sequence_temp,sequence,points);
+                        if (temp_point >  *curr_max_point){
+                            *curr_max_point = temp_point;
+                            curr_max_combination = new_path;
+                        }
+                        if (temp_point == max_points){
+                            break;
+                        }
+                    }
+                    else{
+                        int temp_point;
+                        if (new_path.size() < minSeqSize){
+                            temp_point = 0;
+                        }
+                        else{
+                            temp_point = sequence_to_point(sequence_temp,sequence,points);
+                            if (temp_point > *curr_max_point || (temp_point == *curr_max_point && new_path.size() < curr_max_combination.size())){
+                                *curr_max_point = temp_point;
+                                curr_max_combination = new_path;
+                            }
+                        }
+                        if (temp_point >= max_points){
+                            break;
+                        }
+                        else{
+                            
+                            next_choice(curr_row,next_col,row_matrix,col_matrix,!row_search,buffer,new_path,curr_max_point,curr_max_combination,sequence,points, max_points,matrix,hasVisited, minSeqSize,sequence_temp);
+                        }
+                        sequence_temp.pop_back();
+                        hasVisited[curr_row][next_col] = false;
+                        
+                    }
                 }
-                
-                if (temp_point < max_points && path.size() != buffer && path.size() != row_matrix * col_matrix) {
-                    next_choice(curr_row, next_col, row_matrix, col_matrix, !row_search, buffer, path, curr_max_point, curr_max_combination, sequence, points, max_points, matrix, hasVisited, minSeqSize, sequence_temp);
-                }
-                path.pop_back();
-                sequence_temp.pop_back();
-                hasVisited[curr_row][next_col] = false;
             }
         }
-    } else {
-        for (int next_row = 0; next_row < row_matrix; ++next_row) {
-            if (next_row != curr_row && !hasVisited[next_row][curr_col]) {
-                hasVisited[next_row][curr_col] = true;
-                path.emplace_back(next_row, curr_col);
-                sequence_temp.push_back(matrix[next_row][curr_col]);
-
-                int temp_point = sequence_temp.size() >= minSeqSize ? sequence_to_point(sequence_temp, sequence, points) : 0;
-                
-                if (temp_point > *curr_max_point || (temp_point == *curr_max_point && path.size() < curr_max_combination.size())) {
-                    *curr_max_point = temp_point;
-                    curr_max_combination = path;
+    }
+    else{
+        for (int next_row = 0 ; next_row < row_matrix ; ++next_row){
+            if (next_row != curr_row){
+                vector<pair<int, int>> new_path = path; // next_row, curr_col
+                if (!hasVisited[next_row][curr_col]){
+                    hasVisited[next_row][curr_col] = true;
+                    new_path.emplace_back(next_row,curr_col);
+                    sequence_temp.push_back(matrix[next_row][curr_col]);
+                    if (new_path.size() == buffer || new_path.size() == row_matrix*col_matrix){
+                        int temp_point;
+                        // all_combinations.push_back(new_path);
+                        vector<string> sequence_temp = pathToSequence(new_path,matrix);
+                        temp_point = sequence_to_point(sequence_temp,sequence,points);
+                        if (temp_point >  *curr_max_point){
+                            *curr_max_point = temp_point;
+                            curr_max_combination = new_path;
+                        }
+                        if (temp_point == max_points){
+                            break;
+                        }
+                    }
+                    else{
+                        int temp_point;
+                        if (new_path.size() < minSeqSize){
+                            temp_point = 0;
+                        }
+                        else{
+                            vector<string> sequence_temp = pathToSequence(new_path,matrix);
+                            temp_point = sequence_to_point(sequence_temp,sequence,points);
+                        }
+                        if (temp_point > *curr_max_point || (temp_point == *curr_max_point && new_path.size() < curr_max_combination.size())){
+                                *curr_max_point = temp_point;
+                                curr_max_combination = new_path;
+                        }
+                        if (temp_point >= max_points){
+                            break;
+                        }
+                        else{
+                            
+                            next_choice(next_row,curr_col,row_matrix,col_matrix,!row_search,buffer,new_path,curr_max_point,curr_max_combination,sequence,points, max_points,matrix,hasVisited, minSeqSize,sequence_temp);
+                        }
+                        sequence_temp.pop_back();
+                        hasVisited[next_row][curr_col] = false;
+                    }
                 }
-                
-                if (temp_point < max_points && path.size() != buffer && path.size() != row_matrix * col_matrix) {
-                    next_choice(next_row, curr_col, row_matrix, col_matrix, !row_search, buffer, path, curr_max_point, curr_max_combination, sequence, points, max_points, matrix, hasVisited, minSeqSize, sequence_temp);
-                }
-                path.pop_back();
-                sequence_temp.pop_back();
-                hasVisited[next_row][curr_col] = false;
             }
         }
     }
 }
-
 void allCombinatations(const vector<vector<string>>& sequence, const vector<int>& points, const vector<vector<string>>& matrix, int* curr_max_point, vector <pair<int,int>>& curr_max_combination,int buffer){
     
     int row = matrix.size();
