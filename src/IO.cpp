@@ -113,7 +113,8 @@ void printSequences(vector<vector<string>> sequences, vector<int> points)
             cout << sequences[curr_row][curr_col] << " ";
         }
         cout << endl;
-        cout << "Point " << curr_row +1 << " : " << points[curr_row] << endl;
+        cout << "Point " << curr_row +1 << "      : " << points[curr_row] << endl;
+        cout << endl;
     }
 
 }
