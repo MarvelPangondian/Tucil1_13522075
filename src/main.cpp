@@ -43,7 +43,7 @@ int main(){
                 cout << "MATRIX :" << endl;
                 printMatrix(matrix);
                 cout << endl;
-                cout << " SEQUENCES : " << endl;
+                cout << "SEQUENCES : " << endl;
                 printSequences(sequences,points);
                 cout << endl;
                 auto start = chrono::high_resolution_clock::now(); // start timer
